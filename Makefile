@@ -1,5 +1,5 @@
 TARGET = throwback-tanks
-LIBS = -lallegro-5.0.10-mt
+LIBS = -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
 HEADERS =
 OBJECTS = main.o
 FLAGS = -Os -Wall --std=c99 -mwindows
