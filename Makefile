@@ -1,8 +1,9 @@
 TARGET = throwback-tanks
-LIBS = -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
-HEADERS =
-OBJECTS = main.o
-FLAGS = -Os -Wall --std=c99 -mwindows
+LIBS = -lallegro-5.0.10-mt -lallegro_primitives-5.0.10-mt
+#-lallegro_image-5.0.10-mt
+HEADERS = intersect.h
+OBJECTS = intersect.o main.o
+FLAGS = -Os -Wall --std=c99
 
 default: $(TARGET)
 
