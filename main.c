@@ -2,16 +2,13 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
-
 #define FPS 60.0
 #define SCREEN_W 640
 #define SCREEN_H 480
-
-
 #define MAP_W 16
 #define MAP_H 10
 
-const char *tile_names[] = {"blue.png","bluetop.png","door.png"};
+const char *tile_names[] = {"img/blue.png","img/bluetop.png","img/door.png"};
 const int num_tiles = sizeof(tile_names)/sizeof(*tile_names);
 const int MAP[MAP_H][MAP_W] = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -23,16 +20,7 @@ const int MAP[MAP_H][MAP_W] = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                                {0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0},
                                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-/* Basic idea for collision, involves this:
-** Every part of the game is rendered by a whole bunch of lines.
-** Check if the player's "line" intersects with any of the onscreen lines.
-** If it does then a collision is encountered.
-** 
-** 
-**  
-** 
-** 
-*/
+
 void draw_map(ALLEGRO_BITMAP **tiles) {
     int n = 0;
     for (int y=0;y<MAP_H;y++) {
@@ -45,12 +33,12 @@ void draw_map(ALLEGRO_BITMAP **tiles) {
     }
 }
 
-
 int main(int argc, char **argv){
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
     ALLEGRO_BITMAP *tiles[num_tiles];
+    memset(tiles,0,sizeof(tiles)/sizeof(*tiles));
     bool redraw = true, running = true;
     if (!al_init()) {
         fprintf(stderr, "failed to initialize allegro!\n");
@@ -76,16 +64,13 @@ int main(int argc, char **argv){
     
     for (int i=0;i<num_tiles;i++) {
         tiles[i] = al_load_bitmap(tile_names[i]);
+        if (!tiles[i]) {
+            fprintf(stderr,"failed to load bitmap!\n");
+            al_destroy_timer(timer);
+            al_destroy_display(display);
+            return -1;
+        }
     }
-    
-    /*
-    if (!image) {
-        fprintf(stderr,"failed to load bitmap!\n");
-        al_destroy_timer(timer);
-        al_destroy_display(display);
-        return -1;
-    }
-    */
     
     event_queue = al_create_event_queue();
     if (!event_queue) {
