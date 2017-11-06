@@ -1,4 +1,4 @@
-TARGET = throwback-tanks
+TARGET = tb
 LIBS = -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
 HEADERS = 
 OBJECTS = main.o
@@ -12,8 +12,8 @@ default: $(TARGET)
 $(TARGET): $(OBJECTS)
 	gcc $(OBJECTS) $(FLAGS) $(LIBS) -o ./$@
 run:
-	.\throwback-tanks.exe
+	.\$(TARGET)
 
 clean:
 	-del /s/q/f *.o
-	-del /s/q/f *.a
+	-del /s/q/f *.exe

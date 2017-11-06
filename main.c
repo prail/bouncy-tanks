@@ -2,10 +2,27 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
-const float FPS = 60;
-const int SCREEN_W = 640;
-const int SCREEN_H = 480;
 
+#define FPS 60.0
+#define SCREEN_W 640
+#define SCREEN_H 480
+
+
+#define MAP_W 16
+#define MAP_H 10
+
+const char *tile_names[] = {"blue.png","bluetop.png","door.png"};
+const int num_tiles = sizeof(tile_names)/sizeof(*tile_names);
+const int MAP[MAP_H][MAP_W] = {{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,2,2,2,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,2,1,1,1,0,0,0,0,0,0,0},
+                               {0,0,0,0,2,1,1,1,1,0,0,0,0,0,0,0},
+                               {0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+                               {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 /* Basic idea for collision, involves this:
 ** Every part of the game is rendered by a whole bunch of lines.
 ** Check if the player's "line" intersects with any of the onscreen lines.
@@ -15,17 +32,25 @@ const int SCREEN_H = 480;
 **  
 ** 
 ** 
-*/ 
-
-
+*/
+void draw_map(ALLEGRO_BITMAP **tiles) {
+    int n = 0;
+    for (int y=0;y<MAP_H;y++) {
+        for (int x=0;x<MAP_W;x++) {
+            n=MAP[y][x];
+            if (n != 0) {
+                al_draw_bitmap(tiles[n-1],x*16,y*16,0);
+            }
+        }
+    }
+}
 
 
 int main(int argc, char **argv){
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
-    ALLEGRO_BITMAP *tiles[8];
-    memset(tiles,0,sizeof(ALLEGRO_BITMAP*)*8);
+    ALLEGRO_BITMAP *tiles[num_tiles];
     bool redraw = true, running = true;
     if (!al_init()) {
         fprintf(stderr, "failed to initialize allegro!\n");
@@ -49,8 +74,9 @@ int main(int argc, char **argv){
         return -1;
     }
     
-    tiles[0] = al_load_bitmap("bluetop.png");
-    tiles[1] = al_load_bitmap("blue.png");
+    for (int i=0;i<num_tiles;i++) {
+        tiles[i] = al_load_bitmap(tile_names[i]);
+    }
     
     /*
     if (!image) {
@@ -72,7 +98,7 @@ int main(int argc, char **argv){
     al_register_event_source(event_queue,al_get_display_event_source(display));
     al_register_event_source(event_queue,al_get_timer_event_source(timer));
     al_clear_to_color(al_map_rgb(0,0,0));
-    al_draw_bitmap(tiles[0],0.0,0.0,0);
+    draw_map(tiles);
     al_flip_display();
     al_start_timer(timer);
     while (running) {
@@ -86,18 +112,15 @@ int main(int argc, char **argv){
         if (redraw && al_is_event_queue_empty(event_queue)) {
             redraw = false;
             al_clear_to_color(al_map_rgb(0,0,0));
-            al_draw_bitmap(tiles[0],0,0,0);
-            al_draw_bitmap(tiles[1],16,0,0);
+            draw_map(tiles);
             al_flip_display();
         }
     }
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
-    for (int i=0;i<8;i++) {
-        if (tiles[i] != 0) {
-            al_destroy_bitmap(tiles[i]);
-        }
+    for (int i=0;i<num_tiles;i++) {
+        al_destroy_bitmap(tiles[i]);
     }
     return 0;
     
