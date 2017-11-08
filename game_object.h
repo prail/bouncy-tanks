@@ -14,5 +14,5 @@ struct game_object {
 };
 
 struct game_object *create_game_object();
-
+void destroy_game_object(struct game_object *game);
 #endif

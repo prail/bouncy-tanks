@@ -84,3 +84,12 @@ struct game_object *create_game_object() {
     al_register_event_source(game->event_queue, al_get_keyboard_event_source());
     return game;
 }
+
+void destroy_game_object(struct game_object *game) {
+    al_destroy_timer(game->timer);
+    al_destroy_display(game->display);
+    al_destroy_event_queue(game->event_queue);
+    for (int i=0;i<num_tiles;i++) {
+        al_destroy_bitmap(game->tiles[i]);
+    }
+}

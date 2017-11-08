@@ -72,12 +72,7 @@ int main(int argc, char **argv){
             al_flip_display();
         }
     }
-    al_destroy_timer(game->timer);
-    al_destroy_display(game->display);
-    al_destroy_event_queue(game->event_queue);
-    for (int i=0;i<3;i++) {
-        al_destroy_bitmap(game->tiles[i]);
-    }
+    destroy_game_object(game);
     return 0;
     
 }
