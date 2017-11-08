@@ -40,6 +40,10 @@ struct game_object *create_game_object() {
         free(game);
         return NULL;
     }
+    if(!al_install_keyboard()) {
+      fprintf(stderr, "failed to initialize the keyboard!\n");
+      return NULL;
+   }
     
     game->timer=al_create_timer(1.0/FPS);
     if (!game->timer) {
@@ -77,5 +81,6 @@ struct game_object *create_game_object() {
     
     al_register_event_source(game->event_queue,al_get_display_event_source(game->display));
     al_register_event_source(game->event_queue,al_get_timer_event_source(game->timer));
+    al_register_event_source(game->event_queue, al_get_keyboard_event_source());
     return game;
 }
