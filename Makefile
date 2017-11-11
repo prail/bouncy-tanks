@@ -10,10 +10,10 @@ default: $(TARGET)
 	gcc -c $< $(FLAGS) -o $@ 
 
 $(TARGET): $(OBJECTS)
-	gcc $(OBJECTS) $(FLAGS) $(LIBS) -o ./$@
+	gcc $(OBJECTS) $(FLAGS) $(LIBS) -o .\$@
 run:
 	.\$(TARGET)
 
 clean:
 	-del /s/q/f *.o
-	-del /s/q/f *.exe
+	-del /s/q/f build
