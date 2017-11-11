@@ -9,16 +9,16 @@
 const char *tile_names[] = {"img/blue.png","img/bluetop.png","img/door.png","img/pixel-tank.png"};
 const int num_tiles = sizeof(tile_names)/sizeof(*tile_names);
 
-struct game_object {
+typedef struct game_object {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_TIMER *timer;
     ALLEGRO_BITMAP *tiles[16];
     bool redraw, running;
-};
+} GAME_OBJECT;
 
-struct game_object *create_game_object() {
-    struct game_object *game = malloc(sizeof(struct game_object));
+GAME_OBJECT *create_game_object() {
+    GAME_OBJECT *game = malloc(sizeof(GAME_OBJECT));
     game->redraw=true;
     game->running=true;
     if (!game) {
@@ -85,7 +85,7 @@ struct game_object *create_game_object() {
     return game;
 }
 
-void destroy_game_object(struct game_object *game) {
+void destroy_game_object(GAME_OBJECT *game) {
     al_destroy_timer(game->timer);
     al_destroy_display(game->display);
     al_destroy_event_queue(game->event_queue);

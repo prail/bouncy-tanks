@@ -1,7 +1,7 @@
 TARGET = tb
 LIBS = -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
-HEADERS = game_map.h game_object.h
-OBJECTS = game_object.o main.o
+HEADERS = game_map.h game_object.h camera_object.h tank_object.h
+OBJECTS = game_object.o camera_object.o tank_object.o main.o
 FLAGS = -Os -Wall --std=c99
 
 default: $(TARGET)

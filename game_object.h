@@ -5,14 +5,14 @@
 #define SCREEN_W 640
 #define SCREEN_H 480
 
-struct game_object {
+typedef struct game_object {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_TIMER *timer;
     ALLEGRO_BITMAP *tiles[16];
     bool redraw, running;
-};
+} GAME_OBJECT;
 
-struct game_object *create_game_object();
-void destroy_game_object(struct game_object *game);
+GAME_OBJECT *create_game_object();
+void destroy_game_object(GAME_OBJECT *game);
 #endif
