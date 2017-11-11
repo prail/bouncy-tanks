@@ -49,13 +49,21 @@ int main(int argc, char **argv){
         destroy_camera_object(cam);
         return -1;
     }
+    MAP_OBJECT *game_map = NULL;
+    game_map = create_map_object();
+    if (!game_map) {
+        fprintf(stderr,"failed to create map object!\n");
+        destroy_game_object(game);
+        destroy_camera_object(cam);
+        destroy_tank_object(tank);
+        return -1;
+    }
     int tank_dir=0;
     game = create_game_object();
     if (!game) {
         return -1;
     }
     al_clear_to_color(al_map_rgb(0,0,0));
-    draw_map(game->tiles,cam->x,cam->y);
     al_flip_display();
     al_start_timer(game->timer);
     while (game->running) {
@@ -89,7 +97,7 @@ int main(int argc, char **argv){
         if (game->redraw && al_is_event_queue_empty(game->event_queue)) {
             game->redraw = false;
             al_clear_to_color(al_map_rgb(0,0,0));
-            draw_map(game->tiles,(SCREEN_W/2)+cam->x,(SCREEN_H/2)+cam->y);
+            draw_map(game->tiles,game_map,(SCREEN_W/2)+cam->x,(SCREEN_H/2)+cam->y);
             al_draw_bitmap(game->tiles[3],(SCREEN_W/2)+(cam->x-(tank->x*-1)),(SCREEN_H/2)+(cam->y-(tank->y*-1)),tank_dir);
             al_flip_display();
         }
@@ -97,5 +105,6 @@ int main(int argc, char **argv){
     destroy_game_object(game);
     destroy_camera_object(cam);
     destroy_tank_object(tank);
+    destroy_map_object(game_map);
     return 0;
 }

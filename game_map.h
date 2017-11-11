@@ -1,30 +1,15 @@
 #ifndef _GAME_MAP_H_
 #define _GAME_MAP_H_
 
-#define MAP_W 16
-#define MAP_H 10
 
-const int MAP[MAP_H][MAP_W] = {{0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                               {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                               {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                               {0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1},
-                               {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1},
-                               {0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,1},
-                               {2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1},
-                               {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                               {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                               {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}};
+typedef struct map_object {
+    int data[256][256];
+} MAP_OBJECT;
 
-void draw_map(ALLEGRO_BITMAP **tiles, int offset_x, int offset_y) {
-    int n = 0;
-    for (int y=0;y<MAP_H;y++) {
-        for (int x=0;x<MAP_W;x++) {
-            n=MAP[y][x];
-            if (n != 0) {
-                al_draw_bitmap(tiles[n-1],(x*16)+offset_x,(y*16)+offset_y,0);
-            }
-        }
-    }
-}
+
+MAP_OBJECT *create_map_object();
+void destroy_map_object(MAP_OBJECT *map);
+int map_get_tile(MAP_OBJECT *map, int x, int y);
+void draw_map(ALLEGRO_BITMAP **tiles, MAP_OBJECT *map, int offset_x, int offset_y);
 
 #endif
