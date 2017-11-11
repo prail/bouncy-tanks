@@ -2,5 +2,5 @@
 *.o
 *.dll
 dist\
-dist\img\
+dist\*
 *.zip
