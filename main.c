@@ -2,7 +2,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
-#include "game_map.h"
+#include "map_object.h"
 #include "game_object.h"
 #include "camera_object.h"
 #include "tank_object.h"
@@ -42,7 +42,7 @@ int main(int argc, char **argv){
         return -1;
     }
     TANK_OBJECT *tank = NULL;
-    tank = create_tank_object(0,0);
+    tank = create_tank_object(0,16*254-4);
     if (!tank) {
         fprintf(stderr,"failed to create tank object!\n");
         destroy_game_object(game);

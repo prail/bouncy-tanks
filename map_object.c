@@ -8,7 +8,9 @@ MAP_OBJECT *create_map_object() {
     MAP_OBJECT *tmp_map = NULL;
     tmp_map = malloc(sizeof(MAP_OBJECT));
     memset(tmp_map, 0, sizeof(MAP_OBJECT));
-    tmp_map->data[0][0]=1;
+    for (int i=0;i<256;i++) {
+        tmp_map->data[255][i]=1;
+    }
     return tmp_map;
 }
 
