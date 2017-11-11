@@ -33,6 +33,7 @@ int main(int argc, char **argv){
     struct game_object *game = NULL;
     bool key[4]={false,false,false,false};
     int cam_x=0,cam_y=0;
+    int tank_x=0,tank_y=0,tank_dir=0;
     game = create_game_object();
     if (!game) {
         return -1;
@@ -46,17 +47,22 @@ int main(int argc, char **argv){
         al_wait_for_event(game->event_queue,&ev);
         if (ev.type == ALLEGRO_EVENT_TIMER) {
             if (key[KEY_UP]) {
-                cam_y+=5;
+                tank_y-=5;
             }
             if (key[KEY_DOWN]) {
-                cam_y-=5;
+                tank_y+=5;
             }
             if (key[KEY_LEFT]) {
-                cam_x+=5;
+                tank_x-=5;
+                tank_dir=0;
             }
             if (key[KEY_RIGHT]) {
-                cam_x-=5;
+                tank_x+=5;
+                tank_dir=ALLEGRO_FLIP_HORIZONTAL;
             }
+            cam_x += ((tank_x*-1) - cam_x)/10;
+            cam_y += ((tank_y*-1) - cam_y)/10;
+            //printf("%d, %d",tank_x,tank_y);
             game->redraw=true;
         } else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             game->running=false;
@@ -68,11 +74,11 @@ int main(int argc, char **argv){
         if (game->redraw && al_is_event_queue_empty(game->event_queue)) {
             game->redraw = false;
             al_clear_to_color(al_map_rgb(0,0,0));
-            draw_map(game->tiles,cam_x,cam_y);
+            draw_map(game->tiles,(SCREEN_W/2)+cam_x,(SCREEN_H/2)+cam_y);
+            al_draw_bitmap(game->tiles[3],(SCREEN_W/2)+(cam_x-(tank_x*-1)),(SCREEN_H/2)+(cam_y-(tank_y*-1)),tank_dir);
             al_flip_display();
         }
     }
     destroy_game_object(game);
     return 0;
-    
 }

@@ -9,7 +9,7 @@ struct game_object {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_TIMER *timer;
-    ALLEGRO_BITMAP *tiles[3];
+    ALLEGRO_BITMAP *tiles[16];
     bool redraw, running;
 };
 

@@ -6,14 +6,14 @@
 #define SCREEN_W 640
 #define SCREEN_H 480
 
-const char *tile_names[] = {"img/blue.png","img/bluetop.png","img/door.png"};
+const char *tile_names[] = {"img/blue.png","img/bluetop.png","img/door.png","img/pixel-tank.png"};
 const int num_tiles = sizeof(tile_names)/sizeof(*tile_names);
 
 struct game_object {
     ALLEGRO_DISPLAY *display;
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_TIMER *timer;
-    ALLEGRO_BITMAP *tiles[3];
+    ALLEGRO_BITMAP *tiles[16];
     bool redraw, running;
 };
 
