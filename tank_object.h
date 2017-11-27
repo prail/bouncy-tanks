@@ -2,7 +2,7 @@
 #define _TANK_OBJECT_H_
 
 typedef struct tank_object {
-    int x,y;
+    float x,y;
 } TANK_OBJECT;
 
 TANK_OBJECT *create_tank_object(int init_x, int init_y);

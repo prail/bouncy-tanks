@@ -10,6 +10,6 @@ typedef struct map_object {
 MAP_OBJECT *create_map_object();
 void destroy_map_object(MAP_OBJECT *map);
 int map_get_tile(MAP_OBJECT *map, int x, int y);
-void draw_map(ALLEGRO_BITMAP **tiles, MAP_OBJECT *map, int offset_x, int offset_y);
+void draw_map(ALLEGRO_BITMAP **tiles, MAP_OBJECT *map, float offset_x, float offset_y);
 
 #endif

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <time.h>
 
 #include "map_object.h"
 #include "game_object.h"
@@ -16,15 +17,12 @@ void key_handler(bool key_arr[4], int code, bool set_val) {
         case ALLEGRO_KEY_UP:
             key_arr[KEY_UP] = set_val;
             break;
-
         case ALLEGRO_KEY_DOWN:
             key_arr[KEY_DOWN] = set_val;
             break;
-
         case ALLEGRO_KEY_LEFT: 
             key_arr[KEY_LEFT] = set_val;
             break;
-
         case ALLEGRO_KEY_RIGHT:
             key_arr[KEY_RIGHT] = set_val;
             break;
@@ -32,6 +30,7 @@ void key_handler(bool key_arr[4], int code, bool set_val) {
 }
 
 int main(int argc, char **argv){
+    srand(time(NULL));
     GAME_OBJECT *game = NULL;
     bool key[4]={false,false,false,false};
     CAMERA_OBJECT *cam = NULL;
@@ -67,18 +66,17 @@ int main(int argc, char **argv){
     al_clear_to_color(al_map_rgb(0,0,0));
     al_flip_display();
     al_start_timer(game->timer);
+    int set_x, set_y;
     while (game->running) {
         ALLEGRO_EVENT ev;
         al_wait_for_event(game->event_queue,&ev);
         if (ev.type == ALLEGRO_EVENT_TIMER) {
-            
             if (key[KEY_UP]) {
-                tank->y-=32;
+                tank->y-=5;
             }
             if (key[KEY_DOWN]) {
                 tank->y+=5;
             }
-            
             if (key[KEY_LEFT]) {
                 tank->x-=5;
                 tank_dir=0;
@@ -88,13 +86,34 @@ int main(int argc, char **argv){
                 tank_dir=ALLEGRO_FLIP_HORIZONTAL;
             }
             /*Put tile based collision code here.*/
-            //printf("x: %d y: %d\n",tank->x/16,tank->y);
+            /*
             tank->y+=5;
             while (((tank->y+(tank_width/3))/16)+1 > 255) {
                 tank->y-=5;
             }
+            */
             cam->x += ((tank->x*-1) - cam->x)/5;
             cam->y += ((tank->y*-1) - cam->y)/5;
+            //printf("gridx: %d, gridy: %d x: %d, y: %d\n", (tank->x-(tank_width/2))/16,(tank->x-(tank_width/2))/16, tank->x, tank->y);
+            set_y=(int)((tank->y)/16);
+            set_x=(int)((tank->x)/16);
+            #define CHECKSET(xoff,yoff) \
+            do {\
+                if (set_x+xoff > -1 && set_x+xoff < 256 && set_y+yoff > -1 && set_y+yoff < 256) {\
+                    if (game_map->data[set_y+yoff][set_x+xoff] == 1) {\
+                      printf("collision?\n");\
+                    }\
+                }\
+            } while(0)
+            CHECKSET(0,0);
+            CHECKSET(1,0);
+            CHECKSET(-1,0);
+            CHECKSET(0,1);
+            CHECKSET(0,-1);
+            CHECKSET(-1,-1);
+            CHECKSET(1,-1);
+            CHECKSET(1,1);
+            CHECKSET(-1,1);
             game->redraw=true;
         } else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             game->running=false;

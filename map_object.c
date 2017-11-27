@@ -23,7 +23,7 @@ int map_get_tile(MAP_OBJECT *map, int x, int y) {
     return map->data[y][x];
 }    
 
-void draw_map(ALLEGRO_BITMAP **tiles, MAP_OBJECT *map, int offset_x, int offset_y) {
+void draw_map(ALLEGRO_BITMAP **tiles, MAP_OBJECT *map, float offset_x, float offset_y) {
     int n = 0;
     for (int y=0;y<256;y++) {
         for (int x=0;x<256;x++) {
