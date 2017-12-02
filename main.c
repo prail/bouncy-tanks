@@ -62,15 +62,22 @@ int main(int argc, char **argv){
     if (!game) {
         return -1;
     }
+    for (int i=0;i<255;i++) {
+        for (int j=0;j<255;j++) {
+            if (rand()%100 < 5) game_map->data[j][i]=1;
+        }
+    }
     int tank_width=al_get_bitmap_width(game->tiles[3]),tank_height=al_get_bitmap_height(game->tiles[3]);
     al_clear_to_color(al_map_rgb(0,0,0));
     al_flip_display();
     al_start_timer(game->timer);
-    int set_x, set_y;
+    int set_x, set_y, old_x, old_y;
     while (game->running) {
         ALLEGRO_EVENT ev;
         al_wait_for_event(game->event_queue,&ev);
         if (ev.type == ALLEGRO_EVENT_TIMER) {
+            old_x = tank->x;
+            old_y = tank->y;
             if (key[KEY_UP]) {
                 tank->y-=5;
             }
@@ -97,11 +104,13 @@ int main(int argc, char **argv){
             //printf("gridx: %d, gridy: %d x: %d, y: %d\n", (tank->x-(tank_width/2))/16,(tank->x-(tank_width/2))/16, tank->x, tank->y);
             set_y=(int)((tank->y)/16);
             set_x=(int)((tank->x)/16);
+            /*This entire abuse of macros needs to be cleaned up.*/
             #define CHECKSET(xoff,yoff) \
             do {\
                 if (set_x+xoff > -1 && set_x+xoff < 256 && set_y+yoff > -1 && set_y+yoff < 256) {\
                     if (game_map->data[set_y+yoff][set_x+xoff] == 1) {\
-                      printf("collision?\n");\
+                      tank->x=old_x;\
+                      tank->y=old_y;\
                     }\
                 }\
             } while(0)
@@ -110,10 +119,12 @@ int main(int argc, char **argv){
             CHECKSET(-1,0);
             CHECKSET(0,1);
             CHECKSET(0,-1);
+            /*Diagonal checks.*/
             CHECKSET(-1,-1);
             CHECKSET(1,-1);
             CHECKSET(1,1);
             CHECKSET(-1,1);
+            
             game->redraw=true;
         } else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             game->running=false;
