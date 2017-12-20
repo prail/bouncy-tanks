@@ -92,16 +92,8 @@ int main(int argc, char **argv){
                 tank->x+=5;
                 tank_dir=ALLEGRO_FLIP_HORIZONTAL;
             }
-            /*Put tile based collision code here.*/
-            /*
-            tank->y+=5;
-            while (((tank->y+(tank_width/3))/16)+1 > 255) {
-                tank->y-=5;
-            }
-            */
             cam->x += ((tank->x*-1) - cam->x)/5;
             cam->y += ((tank->y*-1) - cam->y)/5;
-            //printf("gridx: %d, gridy: %d x: %d, y: %d\n", (tank->x-(tank_width/2))/16,(tank->x-(tank_width/2))/16, tank->x, tank->y);
             set_y=(int)((tank->y)/16);
             set_x=(int)((tank->x)/16);
             /*This entire abuse of macros needs to be cleaned up.*/

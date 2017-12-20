@@ -1,19 +1,52 @@
-TARGET = tb
-LIBS = -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
-HEADERS = map_object.h game_object.h camera_object.h tank_object.h
-OBJECTS = map_object.o game_object.o camera_object.o tank_object.o main.o
-FLAGS = -Os -Wall --std=c99
+# ------------------------------------------------
+# Generic Makefile
+#
+# Author: yanick.rochon@gmail.com
+# Date  : 2011-08-10
+#
+# Changelog :
+#   2010-11-05 - first version
+#   2011-08-10 - added structure : sources, objects, binaries
+#				thanks to http://stackoverflow.com/users/128940/beta
+#   2017-04-24 - changed order of linker params
+# ------------------------------------------------
 
-default: $(TARGET)
+# project name (generate executable with this name)
+TARGET   = tb
 
-%.o: %.c $(HEADERS)
-	gcc -c $< $(FLAGS) -o $@ 
+CC	   = gcc
+# compiling flags here
+CFLAGS   = -std=c99 -Wall -I.
 
-$(TARGET): $(OBJECTS)
-	gcc $(OBJECTS) $(FLAGS) $(LIBS) -o .\$@
-run:
-	.\$(TARGET)
+LINKER   = gcc
+# linking flags here
+LFLAGS   = -Wall -I. -lm -lallegro-5.0.10-mt -lallegro_image-5.0.10-mt
 
+# change these to proper directories where each file should be
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
+
+SOURCES  := $(wildcard $(SRCDIR)/*.c)
+INCLUDES := $(wildcard $(SRCDIR)/*.h)
+OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+rm	   = del /s/q/f 
+
+
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	@$(LINKER) $(OBJECTS) $(LFLAGS) -o $@
+	@echo "Linking complete!"
+
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+.PHONY: clean
 clean:
-	-del /s/q/f *.o
-	-del /s/q/f build
+	@$(rm) $(OBJDIR)\*
+	@echo "Cleanup complete!"
+
+.PHONY: remove
+remove: clean
+	@$(rm) $(BINDIR)/$(TARGET)
+	@echo "Executable removed!"
