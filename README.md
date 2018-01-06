@@ -12,5 +12,5 @@ This is a soon to be multiplayer game written in C with the allegro5 game develo
 * Multiple gamemodes; CTF, FFA, and TDM etc.
 * Better art.
 
-#Gameplay
+### Gameplay:
 Wonky physics based arena style battles between tanks.
