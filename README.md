@@ -1,8 +1,16 @@
-# throwback-tanks
+# Bouncy Tanks
+(Name is a work in progress.)
+This is a soon to be multiplayer game written in C with the allegro5 game development library.
 
-Each tank has a cannon. These can be aimed vertically up and down. As well as having a power metric.
-Tanks fire bombs which have delayed explosive fuses. Players can get out of tanks and throw
-the explosives back. Explosives have a blast radius attack that instantly kills players
-in the radius and slightly damages tanks.
+### Implemented Features:
+* Basic camera
+* Tile based map
+* Sprite loading and gamestate.
 
-There is a delay to getting out of your tank.
+### Planned Features:
+* TCP Socket based LAN multiplayer.
+* Multiple gamemodes; CTF, FFA, and TDM etc.
+* Better art.
+
+#Gameplay
+Wonky physics based arena style battles between tanks.
